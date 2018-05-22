@@ -124,6 +124,25 @@ $app->post("/admin/forgot",function(){
 	User::getForgot($_POST["email"]);
 });
 
+$app->get("/admin/forgot/sent",function(){
+	$page = new Hcode\PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot-sent");
+});
+
+$app->get("/admin/forgot/reset",function(){
+	$user=User::validForgotDecrypt($_GET('code'));
+	$page = new Hcode\PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot-reset");
+});
+
 $app->run();
 
  ?>

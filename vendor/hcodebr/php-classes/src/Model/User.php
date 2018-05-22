@@ -147,7 +147,7 @@ class User extends Model {
 			$data=$results[0];
 			$results2=$sql->select("call  sp_userspasswordsrecoveries_create(:iduser,:desip)",array(
 				":iduser"=>$data["user"],
-				">desip"=>$_SERVER["REMOTE_ADDR"]
+				":desip"=>$_SERVER["REMOTE_ADDR"]
 			));
 			if(count($results2)===0){
 				throw new \Exception("Não foi possível recuperar a senha");
@@ -172,7 +172,11 @@ class User extends Model {
 		}
 		
 	}
-
+	
+	public function validForgotDecrypt($code){
+		
+		$idrecovery=mcrypt_decrypt(MCRYPT_RIJNDAEL_128,User::SECRET,base64_decode($code),MCRYPT_MODE_ECB);
+	}
 }
 
  ?>
