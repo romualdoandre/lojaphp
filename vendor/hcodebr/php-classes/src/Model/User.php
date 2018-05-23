@@ -173,9 +173,34 @@ class User extends Model {
 		
 	}
 	
-	public function validForgotDecrypt($code){
+	public static function validForgotDecrypt($code){
 		
 		$idrecovery=mcrypt_decrypt(MCRYPT_RIJNDAEL_128,User::SECRET,base64_decode($code),MCRYPT_MODE_ECB);
+		$sql=new Sql();
+		$result=$sql->select("select * 
+		from tb_userspasswordsrecoveries a 
+		inner join tb_users b using(iduser)
+		inner join tb_persons c using(idperson)
+		where 
+		a.idrecovery=:idrecovery and a.dtrecovery is null and date_add(a.dtregister, interval 1 hour)>=now()",array(':idrecovery')=>$idrecovery);
+		if(count($results)===0){
+			throw new \Exception("Não foi possível recuperar a senha");
+			
+		}
+		else{
+			return $results[0];
+		}
+	}
+	
+	public static function setForgotUsed($idrecovery){
+		$sql=new Sql();
+		$sql->query("update tb_userspasswordsrecoveries set dtrecovery=now() where idrecovery=:idrecovery",array(':idrecovery'=>$idrecovery));
+		
+	}
+	
+	public function setPassword($password){
+		$sql=new Sql();
+		$sql->query("update tb_users set despassword=:password where iduser=:iduser",array(":password"=>$password,":iduser"=>$this->getiduser()));
 	}
 }
 
