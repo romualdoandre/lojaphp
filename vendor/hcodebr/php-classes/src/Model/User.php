@@ -15,7 +15,7 @@ class User extends Model {
 	const SUCCESS = "UserSucesss";
 
 	protected $fields = [
-		"iduser", "idperson", "deslogin", "despassword", "inadmin", "dtergister","desperson","desemail","nrphone"
+		"iduser", "idperson", "deslogin", "despassword", "inadmin", "dtregister","desperson","desemail","nrphone"
 	];
 
 	public static function login($login, $password):User
@@ -182,7 +182,7 @@ class User extends Model {
 		inner join tb_users b using(iduser)
 		inner join tb_persons c using(idperson)
 		where 
-		a.idrecovery=:idrecovery and a.dtrecovery is null and date_add(a.dtregister, interval 1 hour)>=now()",array(':idrecovery')=>$idrecovery);
+		a.idrecovery=:idrecovery and a.dtrecovery is null and date_add(a.dtregister, interval 1 hour)>=now()",array(':idrecovery'=>$idrecovery));
 		if(count($results)===0){
 			throw new \Exception("Não foi possível recuperar a senha");
 			
