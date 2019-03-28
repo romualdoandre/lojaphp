@@ -18,6 +18,6 @@ $app->get("/categories/:idcategory",function($idcategory){
 	$page=new Hcode\Page();
 	$page->setTpl("category",[
 		'category'=>$category->getValues(),
-		'products'=>[]
+		'products'=>Product::checkList($category->getProducts())
 	]);
 });
