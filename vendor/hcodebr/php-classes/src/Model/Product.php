@@ -9,7 +9,7 @@ class Product extends Model {
 
 	
 	protected $fields = [
-		"idproduct", "desproduct","vlprice","vlwidth","vlheight","vllength","vlweight","desurl", "dtregister","desphoto"
+		"idproduct", "desproduct","vlprice","vlwidth","vlheight","vllength","vlweight","desurl", "dtregister","desphoto","nrqtd","vltotal"
 	];
 	
 	public static function listAll(){
