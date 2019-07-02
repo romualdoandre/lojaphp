@@ -13,7 +13,7 @@ class Cart extends Model {
     const SESSION_ERROR = "CartError";
     
     protected $fields = [
-		"idcart", "dessessionid","iduser","vlfreight","dtregister","nrdays","nrdays"
+		"idcart", "dessessionid","iduser","vlfreight","dtregister","nrdays","nrdays","deszipcode",'vlsubtotal','vltotal'
 	];
 
 	public static function getFromSession()
