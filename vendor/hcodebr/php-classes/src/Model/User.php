@@ -168,7 +168,7 @@ class User extends Model {
 		));
 	}
 	
-	public static function getForgot($email){
+	public static function getForgot($email, $inadmin = true){
 		$sql=new Sql();
 		$results=$sql->select("select * from tb_persons a inner join tb_users b on a.idperson=b.idperson where a.desemail=:email",array(
 		":email"=>$email
@@ -179,7 +179,7 @@ class User extends Model {
 		else{
 			$data=$results[0];
 			$results2=$sql->select("call  sp_userspasswordsrecoveries_create(:iduser,:desip)",array(
-				":iduser"=>$data["user"],
+				":iduser"=>$data["iduser"],
 				":desip"=>$_SERVER["REMOTE_ADDR"]
 			));
 			if(count($results2)===0){
@@ -210,7 +210,7 @@ class User extends Model {
 		
 		$idrecovery=mcrypt_decrypt(MCRYPT_RIJNDAEL_128,User::SECRET,base64_decode($code),MCRYPT_MODE_ECB);
 		$sql=new Sql();
-		$result=$sql->select("select * 
+		$results=$sql->select("select * 
 		from tb_userspasswordsrecoveries a 
 		inner join tb_users b using(iduser)
 		inner join tb_persons c using(idperson)
