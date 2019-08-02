@@ -8,6 +8,9 @@ use \Hcode\Model;
 class Address extends Model {
 
 	const SESSION_ERROR = "AddressError";
+	protected $fields = [
+		"idaddress", "idperson", "desaddress", "descomplement", "descity", "desstate","descountry","nrzipcode","dtregister","desnumber","desdistrict"
+	];
 
 	public static function getCEP($nrcep)
 	{
