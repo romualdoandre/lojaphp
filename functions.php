@@ -41,9 +41,10 @@ function getCartNrQtd()
 }
 function getCartVlSubTotal()
 {
-	$cart = Cart::getFromSession();
-	$totals = $cart->getProductsTotals();
-	return formatPrice($totals['vlprice']);
+	//$cart = Cart::getFromSession();
+	//$totals = $cart->getProductsTotals();
+	//return formatPrice($totals['vlprice']);	
+	return 0;
 }
 
  ?>

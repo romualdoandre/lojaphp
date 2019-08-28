@@ -10,9 +10,8 @@ use \Hcode\Model\User;
 class Cart extends Model {
 
 	const SESSION = "Cart";
-    const SESSION_ERROR = "CartError";
-    
-    protected $fields = [
+	const SESSION_ERROR = "CartError";
+	protected $fields = [
 		"idcart", "dessessionid","iduser","vlfreight","dtregister","nrdays","nrdays","deszipcode",'vlsubtotal','vltotal'
 	];
 
@@ -21,7 +20,7 @@ class Cart extends Model {
 
 		$cart = new Cart();
 
-		if (isset($_SESSION[Cart::SESSION]) && (int)$_SESSION[Cart::SESSION]['idcart'] > 0) {
+		if (isset($_SESSION[Cart::SESSION]) && isset($_SESSION[Cart::SESSION]['idcart']) && (int)$_SESSION[Cart::SESSION]['idcart'] > 0) {
 
 			$cart->get((int)$_SESSION[Cart::SESSION]['idcart']);
 
@@ -39,11 +38,10 @@ class Cart extends Model {
 
 					$user = User::getFromSession();
 					
-					$data['iduser'] = $user->getiduser();	
+					$data['iduser'] = $user->getiduser();
+					$cart->setData($data);	
 
 				}
-
-				$cart->setData($data);
 
 				$cart->save();
 
@@ -101,8 +99,9 @@ class Cart extends Model {
 
 	public function save()
 	{
+
 		$sql = new Sql();
-        
+
 		$results = $sql->select("CALL sp_carts_save(:idcart, :dessessionid, :iduser, :deszipcode, :vlfreight, :nrdays)", [
 			':idcart'=>$this->getidcart(),
 			':dessessionid'=>$this->getdessessionid(),
@@ -111,8 +110,8 @@ class Cart extends Model {
 			':vlfreight'=>$this->getvlfreight(),
 			':nrdays'=>$this->getnrdays()
 		]);
-
-		$this->setData($results[0]);
+		if(count($results)>0)
+			$this->setData($results[0]);
 
 	}
 
